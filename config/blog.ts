@@ -3,8 +3,8 @@ import { BlogConfig } from "@/types"
 export const blogConfig: BlogConfig = {
   mainNav: [
     {
-      title: "Blogs",
-      href: "/blogs",
+      title: "Blog",
+      href: "/blog",
     },
     {
       title: "Categories",
