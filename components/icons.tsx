@@ -4,7 +4,6 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  CircleFadingPlus,
   CreditCard,
   FileText,
   HelpCircle,
@@ -23,12 +22,13 @@ import {
   Twitter,
   User,
   X,
+  Zap,
 } from "lucide-react"
 
 export type Icon = LucideIcon
 
 export const Icons = {
-  logo: CircleFadingPlus,
+  logo: Zap,
   close: X,
   spinner: Loader2,
   chevronLeft: ChevronLeft,

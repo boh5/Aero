@@ -15,7 +15,7 @@ export const blogConfig: BlogConfig = {
       href: "/tags",
     },
     {
-      title: "Documentation",
+      title: "About",
       href: "/about",
     },
   ],
