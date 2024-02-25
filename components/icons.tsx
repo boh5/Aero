@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CreditCard,
+  File,
   FileText,
   HelpCircle,
   Image,
