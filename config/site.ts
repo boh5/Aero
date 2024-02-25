@@ -1,12 +1,13 @@
-import { SiteConfig } from "@/types";
+import { SiteConfig } from "@/types"
 
 export const siteConfig: SiteConfig = {
-  name: "FastBlog",
-  description: "A Blog build with Next.js and Gofiber for fast performance and beautiful UI.",
-  url: "https://fastblog.bo.com",
-  ogImage: "https://fastblog.bo.com/og.jpg",
+  name: "Aero",
+  description:
+    "Effortless blogging with Next.js, React, and Tailwind CSS. Publish, draft, comment, and engage with ease. Deployable on Vercel. Start blogging effortlessly!",
+  url: "https://aero.bo.com",
+  ogImage: "https://aero.bo.com/og.jpg",
   links: {
     twitter: "https://twitter.com/bo",
-    github: "https://github.com/bo"
-  }
-};
+    github: "https://github.com/bo",
+  },
+}
