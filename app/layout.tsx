@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "FastBlog",
+    "Aero",
     "Next.js",
     "React",
     "Tailwind CSS",

@@ -61,13 +61,13 @@ EmptyPlaceholder.Title = function EmptyPlaceholderTitle({
   )
 }
 
-interface EmptyPlacholderDescriptionProps
+interface EmptyPlaceholderDescriptionProps
   extends React.HTMLAttributes<HTMLParagraphElement> {}
 
 EmptyPlaceholder.Description = function EmptyPlaceholderDescription({
   className,
   ...props
-}: EmptyPlacholderDescriptionProps) {
+}: EmptyPlaceholderDescriptionProps) {
   return (
     <p
       className={cn(
