@@ -11,7 +11,7 @@ interface BlogCardProps {
 
 export function PostCard({ post, index }: BlogCardProps) {
   return (
-    <article key={post.slug} className="group relative flex flex-col space-y-2">
+    <article className="group relative flex flex-col space-y-2">
       {post.image && (
         <Image
           src={post.image}

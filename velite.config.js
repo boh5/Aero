@@ -14,7 +14,7 @@ const authors = defineCollection({
     .object({
       name: s.string(),
       description: s.string().optional(),
-      avatar: s.image(),
+      avatar: s.string(),
       twitter: s.string(),
     })
     .transform((data) => ({ ...data, permalink: `/authors/${data.name}` })),
@@ -29,7 +29,7 @@ const posts = defineCollection({
       description: s.string().optional(),
       slug: s.slug("posts"), // validate format, unique in posts collection
       date: s.isodate(), // input Date-like string, output ISO Date string.
-      image: s.image(), // input image relpath, output image object with blurImage.
+      image: s.string(), // input image as string, not process it.
       published: s.boolean().default(true),
       metadata: s.metadata(), // extract markdown reading-time, word-count, etc.
       content: s.mdx(), // transform mdx to html
