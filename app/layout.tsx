@@ -4,7 +4,9 @@ import { Inter as FontSans } from "next/font/google"
 import "@/styles/globals.css"
 
 import localFont from "next/font/local"
+import { GoogleAnalytics } from "@next/third-parties/google"
 
+import { env } from "@/env"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
@@ -97,6 +99,7 @@ export default function RootLayout({
           <Toaster />
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_ID} />
     </html>
   )
 }
