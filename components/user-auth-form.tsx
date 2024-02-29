@@ -33,6 +33,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const searchParams = useSearchParams()
 
   async function onSubmit(data: FormData) {
+    // disable email login
+    // TODO: complete email login
+    return toast({
+      title: "Email login is disabled",
+      description: "Please use Github to sign in.",
+      variant: "destructive",
+    })
+
     setIsLoading(true)
 
     const signInResult = await signIn("email", {
