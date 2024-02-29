@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"velite dev\" \"next dev\"",
-    "build": "velite && next build",
+    "build": "velite && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
