@@ -45,7 +45,6 @@ export default defineConfig({
     authors,
   },
   mdx: {
-    remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,
       [
