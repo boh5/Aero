@@ -49,13 +49,13 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   )
 }
 
-interface EmptyPlacholderTitleProps
+interface EmptyPlaceholderTitleProps
   extends React.HTMLAttributes<HTMLHeadingElement> {}
 
 EmptyPlaceholder.Title = function EmptyPlaceholderTitle({
   className,
   ...props
-}: EmptyPlacholderTitleProps) {
+}: EmptyPlaceholderTitleProps) {
   return (
     <h2 className={cn("mt-6 text-xl font-semibold", className)} {...props} />
   )

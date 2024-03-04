@@ -127,7 +127,7 @@ export function Editor({ post }: EditorProps) {
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-10">
             <Link
-              href="/blog"
+              href="/dashboard/posts"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
               <Icons.chevronLeft className="mr-2 h-4 w-4" />
@@ -144,7 +144,7 @@ export function Editor({ post }: EditorProps) {
             <span>Save</span>
           </button>
         </div>
-        <div className="prose prose-stone dark:prose-invert mx-auto w-[800px]">
+        <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
           <TextareaAutosize
             autoFocus
             id="title"

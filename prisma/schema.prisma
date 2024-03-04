@@ -54,6 +54,9 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
+  isAdmin Boolean @default(false) @map(name: "is_admin")
+  isActive Boolean @default(true)  @map(name: "is_active")
+
   accounts Account[]
   sessions Session[]
   Post     Post[]

@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { User } from "@prisma/client"
 import { NextAuthOptions } from "next-auth"
 import EmailProvider from "next-auth/providers/email"
 import GithubProvider from "next-auth/providers/github"
@@ -72,12 +73,13 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name
         session.user.email = token.email
         session.user.image = token.picture
+        session.user.isAdmin = token.isAdmin
       }
 
       return session
     },
     async jwt({ token, user }) {
-      const dbUser = await db.user.findFirst({
+      const dbUser: User = await db.user.findFirst({
         where: {
           email: token.email,
         },
@@ -95,6 +97,7 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
+        isAdmin: dbUser.isAdmin,
       }
     },
   },
