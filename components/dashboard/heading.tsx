@@ -1,14 +1,14 @@
-interface DashboardHeaderProps {
+interface DashboardHeadingProps {
   heading: string
   text?: string
   children?: React.ReactNode
 }
 
-export function DashboardHeader({
+export function DashboardHeading({
   heading,
   text,
   children,
-}: DashboardHeaderProps) {
+}: DashboardHeadingProps) {
   return (
     <div className="flex items-center justify-between px-2">
       <div className="grid gap-1">

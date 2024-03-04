@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next"
 
 import { authOptions } from "@/lib/auth"
 
-export async function checkAdminPermission() {
+export async function checkPermission(admin?: boolean) {
   const session = await getServerSession(authOptions)
 
   let response: Response
@@ -11,7 +11,7 @@ export async function checkAdminPermission() {
   }
 
   const { user } = session
-  if (!user.isAdmin) {
+  if (admin && !user.isAdmin) {
     response = new Response("Permission denied", { status: 403 })
   }
 

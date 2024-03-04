@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 import { db } from "@/lib/db"
-import { checkAdminPermission } from "@/app/api/utils"
+import { checkPermission } from "@/app/api/utils"
 
 const postCreateSchema = z.object({
   title: z.string(),
@@ -10,7 +10,7 @@ const postCreateSchema = z.object({
 
 export async function GET() {
   try {
-    const { user, response } = await checkAdminPermission()
+    const { user, response } = await checkPermission(true)
     if (response) {
       return response
     }
@@ -34,7 +34,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { user, response } = await checkAdminPermission()
+    const { user, response } = await checkPermission(true)
     if (response) {
       return response
     }

@@ -3,7 +3,7 @@ import { z } from "zod"
 
 import { db } from "@/lib/db"
 import { postPatchSchema } from "@/lib/validations/post"
-import { checkAdminPermission } from "@/app/api/utils"
+import { checkPermission } from "@/app/api/utils"
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -18,7 +18,7 @@ export async function DELETE(
   try {
     const { params } = routeContextSchema.parse(context)
 
-    const { user, response } = await checkAdminPermission()
+    const { user, response } = await checkPermission(true)
     if (response) {
       return response
     }
@@ -50,7 +50,7 @@ export async function PATCH(
   try {
     const { params } = routeContextSchema.parse(context)
 
-    const { user, response } = await checkAdminPermission()
+    const { user, response } = await checkPermission(true)
     if (response) {
       return response
     }
