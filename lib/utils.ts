@@ -1,7 +1,9 @@
 import { clsx, type ClassValue } from "clsx"
+import { Session } from "next-auth"
 import { twMerge } from "tailwind-merge"
 
 import { adminDashboardConfig, userDashboardConfig } from "@/config/dashboard"
+import { db } from "@/lib/db"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -26,4 +28,18 @@ export function getDashboardConfig(isAdmin: boolean) {
   }
 
   return userDashboardConfig
+}
+
+export async function verifyCurrentUserHasAccessToPost(
+  user: Session["user"],
+  postId: string
+) {
+  const count = await db.post.count({
+    where: {
+      id: postId,
+      authorId: user.id,
+    },
+  })
+
+  return count > 0
 }

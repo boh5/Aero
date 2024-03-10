@@ -54,12 +54,12 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
-  isAdmin Boolean @default(false) @map(name: "is_admin")
-  isActive Boolean @default(true)  @map(name: "is_active")
+  isAdmin  Boolean @default(false) @map(name: "is_admin")
+  isActive Boolean @default(true) @map(name: "is_active")
 
   accounts Account[]
   sessions Session[]
-  Post     Post[]
+  posts    Post[]
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
@@ -79,15 +79,45 @@ model VerificationToken {
 }
 
 model Post {
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  content       Json?
+  preview_image String?  @map(name: "preview_image")
+  published     Boolean  @default(false)
+  createdAt     DateTime @default(now()) @map(name: "created_at")
+  updatedAt     DateTime @default(now()) @map(name: "updated_at")
+  authorId      String   @map(name: "author_id")
+  categoryId    String?  @map(name: "category_id")
+  tags          Tag[]
+
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([title], type: BTree)
+  @@index([published(sort: Desc)], type: BTree)
+  @@map(name: "posts")
+}
+
+model Category {
   id        String   @id @default(cuid())
-  title     String
-  content   Json?
-  published Boolean  @default(false)
+  name      String
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
-  authorId  String
 
-  author User @relation(fields: [authorId], references: [id])
+  posts Post[]
 
-  @@map(name: "posts")
+  @@map(name: "categories")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  posts Post[]
+
+  @@index([name], type: BTree)
+  @@map(name: "tags")
 }

@@ -1,9 +1,8 @@
-import { Session } from "next-auth"
 import { z } from "zod"
 
 import { db } from "@/lib/db"
 import { verifyCurrentUserHasAccessToPost } from "@/lib/utils"
-import { postPatchSchema } from "@/lib/validations/post"
+import { postPublishSchema } from "@/lib/validations/post"
 import { checkPermission } from "@/app/api/utils"
 
 const routeContextSchema = z.object({
@@ -11,38 +10,6 @@ const routeContextSchema = z.object({
     postId: z.string(),
   }),
 })
-
-export async function DELETE(
-  req: Request,
-  context: z.infer<typeof routeContextSchema>
-) {
-  try {
-    const { params } = routeContextSchema.parse(context)
-
-    const { user, response } = await checkPermission(true)
-    if (response) {
-      return response
-    }
-
-    if (!(await verifyCurrentUserHasAccessToPost(user, params.postId))) {
-      return new Response(null, { status: 403 })
-    }
-
-    await db.post.delete({
-      where: {
-        id: params.postId,
-      },
-    })
-
-    return new Response(null, { status: 204 })
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 })
-    }
-
-    return new Response(null, { status: 500 })
-  }
-}
 
 export async function PATCH(
   req: Request,
@@ -61,22 +28,25 @@ export async function PATCH(
     }
 
     const json = await req.json()
-    const body = postPatchSchema.parse(json)
+    const body = postPublishSchema.parse(json)
 
-    // Update the post.
-    // TODO: Implement sanitization for content.
+    // Publish the post.
     await db.post.update({
       where: {
         id: params.postId,
       },
       data: {
         title: body.title,
-        content: body.content,
+        description: body.description,
+        preview_image: body.preview_image,
+        categoryId: body.category_id,
+        published: true,
       },
     })
 
     return new Response(null, { status: 200 })
   } catch (error) {
+    console.log(error)
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })
     }

@@ -36,7 +36,6 @@ export default async function PostPage() {
     },
   })
 
-  console.log("query posts", `post count: ${posts.length}`)
   return (
     <DashboardShell>
       <DashboardHeading heading="Posts" text="Create and manage posts.">

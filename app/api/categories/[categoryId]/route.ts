@@ -1,14 +1,12 @@
-import { Session } from "next-auth"
 import { z } from "zod"
 
 import { db } from "@/lib/db"
-import { verifyCurrentUserHasAccessToPost } from "@/lib/utils"
-import { postPatchSchema } from "@/lib/validations/post"
+import { categoryUpdateSchema } from "@/lib/validations/category"
 import { checkPermission } from "@/app/api/utils"
 
 const routeContextSchema = z.object({
   params: z.object({
-    postId: z.string(),
+    categoryId: z.string(),
   }),
 })
 
@@ -17,20 +15,29 @@ export async function DELETE(
   context: z.infer<typeof routeContextSchema>
 ) {
   try {
+    console.log(context)
     const { params } = routeContextSchema.parse(context)
 
-    const { user, response } = await checkPermission(true)
+    const { response } = await checkPermission(true)
     if (response) {
       return response
     }
 
-    if (!(await verifyCurrentUserHasAccessToPost(user, params.postId))) {
-      return new Response(null, { status: 403 })
+    const exist_posts = await db.post.findFirst({
+      where: {
+        categoryId: params.categoryId,
+      },
+    })
+    if (exist_posts) {
+      return new Response(
+        JSON.stringify({ message: "Category has posts, cannot delete." }),
+        { status: 400 }
+      )
     }
 
-    await db.post.delete({
+    await db.category.delete({
       where: {
-        id: params.postId,
+        id: params.categoryId,
       },
     })
 
@@ -51,27 +58,20 @@ export async function PATCH(
   try {
     const { params } = routeContextSchema.parse(context)
 
-    const { user, response } = await checkPermission(true)
+    const { response } = await checkPermission(true)
     if (response) {
       return response
     }
 
-    if (!(await verifyCurrentUserHasAccessToPost(user, params.postId))) {
-      return new Response(null, { status: 403 })
-    }
-
     const json = await req.json()
-    const body = postPatchSchema.parse(json)
+    const body = categoryUpdateSchema.parse(json)
 
-    // Update the post.
-    // TODO: Implement sanitization for content.
-    await db.post.update({
+    await db.category.update({
       where: {
-        id: params.postId,
+        id: params.categoryId,
       },
       data: {
-        title: body.title,
-        content: body.content,
+        name: body.name,
       },
     })
 
