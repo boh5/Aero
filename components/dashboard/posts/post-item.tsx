@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { Post } from "@prisma/client"
 
-import { formatDate } from "@/lib/utils"
+import { cn, formatDate } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/dashboard/posts/post-operations"
 
@@ -25,7 +26,12 @@ export function PostItem({ post }: PostItemProps) {
           {formatDate(post.createdAt?.toDateString())}
         </p>
       </div>
-      <PostOperations post={{ id: post.id, title: post.title }} />
+      <div>
+        <p className="text-sm text-muted-foreground">
+          {post.published ? "Published" : "Draft"}
+        </p>
+      </div>
+      <PostOperations post={post} />
     </div>
   )
 }

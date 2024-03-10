@@ -41,14 +41,32 @@ async function deletePost(postId: string) {
   return true
 }
 
+async function makeDraft(postId: string) {
+  const response = await fetch(`/api/posts/${postId}/draft`, {
+    method: "PATCH",
+  })
+
+  if (!response?.ok) {
+    toast({
+      title: "Something went wrong.",
+      description: "Your post was not made a draft. Please try again.",
+      variant: "destructive",
+    })
+  }
+
+  return true
+}
+
 interface PostOperationsProps {
-  post: Pick<Post, "id" | "title">
+  post: Pick<Post, "id" | "title" | "published" | "createdAt">
 }
 
 export function PostOperations({ post }: PostOperationsProps) {
   const router = useRouter()
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+  const [showMakeDraftAlert, setShowMakeDraftAlert] = useState(false)
+  const [isMakeDraftLoading, setIsMakeDraftLoading] = useState(false)
 
   return (
     <>
@@ -58,6 +76,23 @@ export function PostOperations({ post }: PostOperationsProps) {
           <span className="sr-only">Open</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          <DropdownMenuItem>
+            <Link
+              href={`/editor/${post.id}?publish=true`}
+              className="flex w-full"
+            >
+              Publish
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            disabled={!post.published}
+            className="flex cursor-pointer items-center"
+            onSelect={() => setShowMakeDraftAlert(true)}
+          >
+            Make draft
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href={`/editor/${post.id}`} className="flex w-full">
               Edit
@@ -104,6 +139,42 @@ export function PostOperations({ post }: PostOperationsProps) {
                 <Icons.trash className="mr-2 h-4 w-4" />
               )}
               <span>Delete</span>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog
+        open={showMakeDraftAlert}
+        onOpenChange={setShowMakeDraftAlert}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to make this post a draft?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This post will no longer be visible to readers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={async (event) => {
+                event.preventDefault()
+                setIsMakeDraftLoading(true)
+                const done = await makeDraft(post.id)
+
+                if (done) {
+                  setIsMakeDraftLoading(false)
+                  setShowMakeDraftAlert(false)
+                  router.refresh()
+                }
+              }}
+            >
+              {isMakeDraftLoading && (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              <span>Make draft</span>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -16,10 +16,11 @@ import { cn } from "@/lib/utils"
 import { postPatchSchema } from "@/lib/validations/post"
 import { buttonVariants } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
+import { PostPublishDialog } from "@/components/editor/publish-dialog"
 import { Icons } from "@/components/icons"
 
 interface EditorProps {
-  post: Pick<Post, "id" | "title" | "content" | "published">
+  post: Post
 }
 
 type FormData = z.infer<typeof postPatchSchema>
@@ -42,6 +43,7 @@ export function Editor({ post }: EditorProps) {
     const Code = (await import("@editorjs/code")).default
     const LinkTool = (await import("@editorjs/link")).default
     const InlineCode = (await import("@editorjs/inline-code")).default
+    const ImageTool = (await import("@editorjs/image")).default
 
     const body = postPatchSchema.parse(post)
 
@@ -62,6 +64,15 @@ export function Editor({ post }: EditorProps) {
           inlineCode: InlineCode,
           table: Table,
           embed: Embed,
+          image: {
+            class: ImageTool,
+            config: {
+              endpoints: {
+                byFile: "/api/file/upload",
+                byUrl: "/api/file/upload-by-url",
+              },
+            },
+          },
         },
       })
     }
@@ -122,28 +133,35 @@ export function Editor({ post }: EditorProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid w-full gap-10">
-        <div className="flex w-full items-center justify-between">
-          <div className="flex items-center space-x-10">
-            <Link
-              href="/dashboard/posts"
-              className={cn(buttonVariants({ variant: "ghost" }))}
-            >
-              <Icons.chevronLeft className="mr-2 h-4 w-4" />
-              Back
-            </Link>
-            <p className="text-sm text-muted-foreground">
-              {post.published ? "Published" : "Draft"}
-            </p>
-          </div>
-          <button type="submit" className={cn(buttonVariants())}>
+    <div className="grid w-full gap-10">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center space-x-10">
+          <Link
+            href="/dashboard/posts"
+            className={cn(buttonVariants({ variant: "ghost" }))}
+          >
+            <Icons.chevronLeft className="mr-2 h-4 w-4" />
+            Back
+          </Link>
+          <p className="text-sm text-muted-foreground">
+            {post.published ? "Published" : "Draft"}
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <PostPublishDialog post={post} />
+          <button
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            className={cn(buttonVariants())}
+          >
             {isSaving && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             <span>Save</span>
           </button>
         </div>
+      </div>
+      <form>
         <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
           <TextareaAutosize
             autoFocus
@@ -162,7 +180,7 @@ export function Editor({ post }: EditorProps) {
             to open the command menu.
           </p>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   )
 }

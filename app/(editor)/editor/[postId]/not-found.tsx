@@ -11,7 +11,7 @@ export default function NotFound() {
       <EmptyPlaceholder.Description>
         This post cound not be found. Please try again.
       </EmptyPlaceholder.Description>
-      <Link href="/blog" className={buttonVariants({ variant: "ghost" })}>
+      <Link href="/dashboard" className={buttonVariants({ variant: "ghost" })}>
         Go to Dashboard
       </Link>
     </EmptyPlaceholder>

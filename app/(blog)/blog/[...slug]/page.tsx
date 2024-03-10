@@ -26,6 +26,8 @@ async function getPostFromParams(params: { slug: string[] }) {
     return null
   }
 
+  console.log(post)
+
   return post
 }
 
