@@ -43,3 +43,8 @@ export async function verifyCurrentUserHasAccessToPost(
 
   return count > 0
 }
+
+export * from "./tiptap/cssVar"
+export * from "./tiptap/getRenderContainer"
+export * from "./tiptap/isCustomNodeSelected"
+export * from "./tiptap/isTextSelected"

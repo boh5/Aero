@@ -37,6 +37,7 @@ export function Editor({ post }: EditorProps) {
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default
     const Header = (await import("@editorjs/header")).default
+    const Paragraph = (await import("@editorjs/paragraph")).default
     const Embed = (await import("@editorjs/embed")).default
     const Table = (await import("@editorjs/table")).default
     const List = (await import("@editorjs/list")).default
@@ -50,6 +51,7 @@ export function Editor({ post }: EditorProps) {
     if (!ref.current) {
       const editor = new EditorJS({
         holder: "editor",
+        readOnly: true,
         onReady() {
           ref.current = editor
         },
@@ -57,7 +59,18 @@ export function Editor({ post }: EditorProps) {
         inlineToolbar: true,
         data: body.content,
         tools: {
-          header: Header,
+          header: {
+            class: Header,
+            config: {
+              placeholder: "Enter a header",
+              levels: [2, 3, 4, 5, 6],
+              defaultLevel: 3,
+            },
+          },
+          paragraph: {
+            class: Paragraph,
+            inlineToolbar: true,
+          },
           linkTool: LinkTool,
           list: List,
           code: Code,
