@@ -4,7 +4,7 @@ import { Post, User } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { Editor } from "@/components/editor/editor"
+import { PlateEditor } from "@/components/plate-editor/editor"
 
 async function getPostForUser(postId: Post["id"], userId: User["id"]) {
   return db.post.findFirst({
@@ -32,5 +32,5 @@ export default async function EditorPage({ params }: EditorPageProps) {
     notFound()
   }
 
-  return <Editor post={post} />
+  return <PlateEditor />
 }
